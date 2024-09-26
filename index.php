@@ -6,34 +6,27 @@
 	<title>Document</title>
 </head>
 <body>
-	<?php session_start(); ?>
-
-	<h1>Fill in the input fields below</h1>
-	
+	<?php 
+	session_start();
+	?>
 	<form action="handleForm.php" method="POST">
-		<p><input type="text" placeholder="First name here" name="firstName"></p>
-		<p><input type="password" placeholder="Password here" name="password"></p>
+		<p><input type="text" placeholder="First name here" name="firstName" required></p>
+		<p><input type="password" placeholder="Password here" name="password" required></p>
 		<p><input type="submit" value="Login" name="submitBtn"></p>
 	</form>
-
-	<a href="unset.php">Logout</a>
-
-	<h2>
-		User logged in:
-		<?php
-		if(isset($_SESSION['firstName'])) {
-			echo $_SESSION['firstName'];
+	<form action="unset.php" metho="POST">
+		<p><input type="submit" value="Logout" name="submitBtn"></p>
+	</form>
+<?php 
+	if (isset($_SESSION['errorMessage'])) {
+		echo $_SESSION['errorMessage'] . "</p>";
+	} else {
+		// Display the first user's name and password if no error message
+		if (isset($_SESSION['firstName'])) {
+			echo "<h2>User logged in: " . $_SESSION['firstName'] . "</h2>";
+			echo "<h2>User password: " . $_SESSION['password'] . "</h2>";
 		}
-		?>		
-	</h2>
-
-	<h2>
-		User password:
-		<?php
-		if(isset($_SESSION['password'])) {
-			echo $_SESSION['password'];
-		}
-		?>		
-	</h2>
+	}
+	?>
 </body>
 </html>

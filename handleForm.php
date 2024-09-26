@@ -1,22 +1,21 @@
 <?php 
-
 session_start();
-
-// Check if submitBtn exists
-if(isset($_POST['submitBtn'])) {
-
-	// Get the first name from index.php
+if (isset($_POST['submitBtn'])) {
 	$firstName = $_POST['firstName'];
-
-	// Get the password from the input field
 	$password = md5($_POST['password']);
-
-	// Set the session variables
-	$_SESSION['firstName'] = $firstName;
-	$_SESSION['password'] = $password;
-
-	// Go back to index.php
+	if (isset($_SESSION['firstUser']) && $_SESSION['firstUser'] !== $firstName) {
+		$_SESSION['errorMessage'] = $_SESSION['firstUser'] . " is already logged in. Please wait until they log out.";
+		unset($_SESSION['firstName']);
+		unset($_SESSION['password']);
+	} else {
+		$_SESSION['firstName'] = $firstName;
+		$_SESSION['password'] = $password;
+		if (!isset($_SESSION['firstUser'])) {
+			$_SESSION['firstUser'] = $firstName;
+		}
+		unset($_SESSION['errorMessage']);
+	}
 	header('Location: index.php');
+	exit();
 }
-
 ?>
